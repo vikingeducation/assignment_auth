@@ -2,7 +2,9 @@ class UsersController < ApplicationController
   USERS = {"peter" => "privatesshkey"}
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate, except: [:show, :index]
+  before_action :require_current_user, :only => [:edit, :update, :destroy]
+
+  skip_before_action :require_login, :only => [:new, :create]
 
   # GET /users
   # GET /users.json
@@ -57,6 +59,11 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    if @user == current_user
+      sign_out
+      flash[:success] = "Deleted your account and signed out."
+    end
+    
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
@@ -67,18 +74,15 @@ class UsersController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_user
-      @user = User.find(params[:id])
+      @user = current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email)
-    end
-
-    def authenticate
-      authenticate_or_request_with_http_digest do |username|
-        USERS[username]
-      end
+      params.require(:user).permit( :username,
+                                    :email,
+                                    :password,
+                                    :password_confirmation )
     end
 
 end
