@@ -8,6 +8,10 @@
 </head>
 <body>
 
+<% flash.each do |key, value| %>
+  <%= content_tag :div, value, class: "flash #{key}" %>
+<% end %>
+
 <% if signed_in_user? %>
   Welcome, <%= link_to current_user.username, current_user %>
 
