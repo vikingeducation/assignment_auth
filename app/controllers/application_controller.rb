@@ -25,4 +25,11 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
   helper_method :signed_in?
+
+  def require_current_user
+    unless current_user && params[:id] == current_user.id.to_s
+      flash[:error] = "HACKER! Report to the shooting range for immediate execution!"
+      redirect_to users_path
+    end
+  end
 end
