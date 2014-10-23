@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   validates :password, 
             :length => { :in => 8..24 }, 
             :allow_nil => true
-            
+
   # GET /users
   # GET /users.json
   def index
@@ -74,6 +74,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 end
