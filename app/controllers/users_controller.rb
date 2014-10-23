@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
+  has_secure_password
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-
+  
+  validates :password, 
+            :length => { :in => 8..24 }, 
+            :allow_nil => true
+            
   # GET /users
   # GET /users.json
   def index
