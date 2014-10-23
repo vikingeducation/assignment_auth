@@ -9,6 +9,7 @@
   u=User.new
   u.username="user#{i}"
   u.email="user#{i}@user.com"
+  u.password="foobar"
   u.save
 
 end
