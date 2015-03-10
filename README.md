@@ -1,4 +1,4 @@
-assignment_basic_auth
+assignment_auth
 =====================
 
 Who are you and why are you here?
