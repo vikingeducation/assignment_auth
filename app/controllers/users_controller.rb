@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :require_current_user, :only => [:edit, :update, :destroy]
+  before_action :set_user, :only => [:destroy, :edit, :update, :show]
   # GET /users
   # GET /users.json
   def index
@@ -9,7 +10,6 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @user = current_user
   end
 
   # GET /users/new
@@ -39,9 +39,9 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if current_user.update(user_params)
+      if @user.update(user_params)
         flash[:success] = "Successfully updated your profile"
-        redirect_to current_user
+        redirect_to @user
       else
         flash.now[:failure] = "Failed to update your profile"
         render :edit
@@ -53,6 +53,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+    
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }

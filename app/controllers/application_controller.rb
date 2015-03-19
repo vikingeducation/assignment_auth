@@ -48,7 +48,7 @@ private
 
   def require_current_user
     # don't forget that params is a string!!!
-    unless params[:id] == current_user.id.to_s
+    unless current_user && params[:id] == current_user.id.to_s
       flash[:error] = "You're not authorized to view this"
       redirect_to root_url
     end
