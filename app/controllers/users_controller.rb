@@ -1,9 +1,8 @@
 class UsersController < ApplicationController
-  http_basic_authenticate_with name: "Space",
-                               password: "Dandy",
-                               only: [:update, :destroy, :create, :edit]
+  USERS = { "Space" => "Dandy" }
 
-  before_action :set_user, only: [:show, :edit, :update, :destroy, :create, :new]
+  before_action :authenticate_user, :set_user, only: [:show, :edit, :update, :destroy, :create, :new]
+  skip_filter :authenticate_user, only: :show
 
   # GET /users
   # GET /users.json
@@ -74,5 +73,11 @@ class UsersController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
       params.require(:user).permit(:username, :email)
+    end
+
+    def authenticate_user
+      authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
     end
 end
