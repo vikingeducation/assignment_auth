@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  USERS = { "Trevor" => "testing" }
-
-  before_action :authenticate, :except => [:index, :show]
+  before_action :current_user
+  before_action :require_login, :except => [:index, :show, :new, :create]
+  before_action :require_current_user, :only => [:edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -34,6 +34,7 @@ class UsersController < ApplicationController
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
+        sign_in(@user)
       else
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
@@ -62,6 +63,7 @@ class UsersController < ApplicationController
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
+      sign_out
     end
   end
 
@@ -73,13 +75,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 
-    # Authenticate our users
-    def authenticate
-      authenticate_or_request_with_http_digest do |username|
-        USERS[username]
-      end
-    end
 end
