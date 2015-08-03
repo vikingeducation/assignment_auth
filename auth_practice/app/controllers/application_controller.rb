@@ -3,9 +3,9 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  USERS  =  {"foo" => "password"}
+  # USERS  =  {"foo" => "password"}
 
-  before_action :authenticate
+  # before_action :authenticate
 
   # http_basic_authenticate_with :name => "foo",
   #                               :password => "password",

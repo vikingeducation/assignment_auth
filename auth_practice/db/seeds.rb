@@ -9,5 +9,5 @@
 User.destroy_all
 
 5.times do |i|
-  User.create(:username => "User_#{i}", :email => "user#{i}@email.com")
+  User.create(:username => "User_#{i}", :email => "user#{i}@email.com", :password => i.to_s)
 end
