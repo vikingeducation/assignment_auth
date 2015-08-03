@@ -4,11 +4,11 @@ class SessionsController < ApplicationController
 	end
 
 	def create
-		@user = User.find_by_email(params[:email])
-		if @user && @user.authenticate(params[:password])
+		@user = User.find_by_username(params[:username])
+		if @user && @user.authenticate(params[:password_digest])
 			sign_in(@user)
 			flash[:success] = "Logged In"
-			redirect_to users
+			redirect_to users_path
 		else
 			flash.now[:error] = "Could not sign in"
 			render :new
