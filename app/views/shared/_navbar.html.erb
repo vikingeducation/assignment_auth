@@ -1,0 +1,5 @@
+<% if signed_in_user? %>
+<h1> <%= link_to "Sign Out", logout_path, method: "delete" %> </h1>
+<% else %>
+<h1> <%= link_to "Sign In", login_path %> </h1>
+<% end %>
