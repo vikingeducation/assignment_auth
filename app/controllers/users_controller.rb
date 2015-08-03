@@ -3,6 +3,7 @@ class UsersController < ApplicationController
 
   # skip_filter :authenticate, only: [:show, :index]
   before_action :require_login, except: [:new, :create, :index, :show]
+  before_action :require_current_user, :only => [:edit, :update, :destroy]
 
   # GET /users
   # GET /users.json

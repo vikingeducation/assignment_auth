@@ -9,5 +9,5 @@
 User.destroy_all
 
 10.times do |idx|
-  User.create(username: idx)
+  User.create!(username: idx, password: idx.to_s*8)
 end

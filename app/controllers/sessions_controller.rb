@@ -9,7 +9,7 @@ class SessionsController < ApplicationController
       # we'll put this logic into a simple helper
       sign_in(@user)
       flash[:notice] = "You've successfully signed in"
-      redirect_to root_url
+      redirect_to users_path
     else
       flash.now[:notice] = "We couldn't sign you in"
       render :new
@@ -20,6 +20,6 @@ class SessionsController < ApplicationController
     # another simple helper
     sign_out
     flash[:notice] = "You've successfully signed out"
-    redirect_to root_url
+    redirect_to users_path
   end
 end
