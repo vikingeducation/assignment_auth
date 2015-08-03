@@ -1,11 +1,11 @@
 class UsersController < ApplicationController
 
-  USERS = { "foo" => "bar" }
+  # USERS = { "foo" => "bar" }
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
-  before_action :authenticate, :except => [:index, :show]
   # http_basic_authenticate_with :name => "foo", :password => "bar", :except => [:index, :show]
+  # before_action :authenticate, :except => [:index, :show]
 
   # GET /users
   # GET /users.json
@@ -75,7 +75,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 
     def authenticate
