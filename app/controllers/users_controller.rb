@@ -3,6 +3,8 @@ class UsersController < ApplicationController
   # USERS = { "foo" => "bar" }
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_current_user, :only => [:edit, :update, :destroy]
+  skip_before_action :require_login, :only => [:new, :create]
 
   # http_basic_authenticate_with :name => "foo", :password => "bar", :except => [:index, :show]
   # before_action :authenticate, :except => [:index, :show]
@@ -34,6 +36,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -47,7 +50,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      if current_user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -60,7 +63,8 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
+    current_user.destroy
+    sign_out
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
@@ -83,5 +87,13 @@ class UsersController < ApplicationController
         USERS[username]
       end
     end
+
+    def require_current_user
+      unless params[:id] == current_user.id.to_s
+        flash[:error] = "Access denied!"
+        redirect_to root_url
+      end
+    end
+
 
 end
