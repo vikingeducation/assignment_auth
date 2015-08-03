@@ -1,7 +1,10 @@
 class UsersController < ApplicationController
   # USERS = { "admin" => "foo" }
   # before_action :authenticate, except: [:index, :show] 
-  # before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_login, except: [:new, :create]
+  before_action :check_current_user, only: [:edit, :update, :destroy]
+  before_action :require_not_logged_in, only: [:new, :create]
 
   # GET /users
   # GET /users.json
@@ -30,6 +33,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -56,6 +60,7 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
+    sign_out
     @user.destroy
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
@@ -79,4 +84,37 @@ class UsersController < ApplicationController
     #     USERS[username]
     #   end
     # end
+
+    def require_login
+      unless signed_in_user?
+        flash[:error] = "You have to log in first!"
+        redirect_to login_path
+      end
+    end
+
+    def require_not_logged_in
+      if signed_in_user?
+        flash[:error] = "You are already a user!"
+        redirect_to URI(request.referer).path
+      end
+    end
+
+    def check_current_user
+      unless current_user == User.find(params[:id])
+        flash[:error] = "You are not authorized to do this!"
+        redirect_to URI(request.referer).path
+      end
+    end
+
 end
+
+
+
+
+
+
+
+
+
+
+
