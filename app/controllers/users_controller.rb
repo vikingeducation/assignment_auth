@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   # USERS = { "admin" => "foo" }
   # before_action :authenticate, except: [:index, :show] 
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  # before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -74,9 +74,9 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 
-    def authenticate
-      authenticate_or_request_with_http_digest do |username|
-        USERS[username]
-      end
-    end
+    # def authenticate
+    #   authenticate_or_request_with_http_digest do |username|
+    #     USERS[username]
+    #   end
+    # end
 end
