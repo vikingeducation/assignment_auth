@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AssignmentBasicAuth</title>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<% flash.each do |type, msg| %>
+  <%= "#{type}: #{msg}" %>
+  <br>
+<% end %>
+
+
+<% if signed_in_user? %>
+  <%= link_to "Sign Out", logout_path, method: :delete %>
+  <%= "#{current_user.username}" %>
+<% else %>
+  <%= link_to "Sign In", login_path %>
+<% end %>
+
+<%= yield %>
+
+</body>
+</html>
