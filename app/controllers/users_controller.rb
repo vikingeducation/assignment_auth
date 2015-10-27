@@ -1,15 +1,19 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  # Basic HTTP Auth
   # Insecure!!!
   # HTTP Header: Authorization: Basic YWRtaW46YWRtaW4=
   # Base64.decode64('YWRtaW46YWRtaW4=')
   # "admin:admin"
-  http_basic_authenticate_with  :name => 'admin',
-                                :password => 'admin',
-                                :except => [:index, :show]
+  # http_basic_authenticate_with  :name => 'admin',
+  #                               :password => 'admin',
+  #                               :except => [:index, :show]
 
-                                # Authorization Basic YWRtaW46YWRtaW4=
+  # Disgest HTTP Auth
+  USERS = {'admin' => 'admin'}
+  before_action :authenticate,
+                :except => [:index, :show]
 
   # GET /users
   # GET /users.json
@@ -81,4 +85,14 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :email)
     end
+
+    def authenticate
+      authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
+    end
 end
+
+
+
+
