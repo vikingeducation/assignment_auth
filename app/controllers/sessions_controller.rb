@@ -16,7 +16,7 @@ class SessionsController < ApplicationController
       flash[:success] = 'Signed out'
       redirect_to login_path
     else
-      redirect_to referer
+      redirect_to request.referer
       flash[:error] = 'Not signed out'
     end
   end
