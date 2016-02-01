@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
-  # before_action :authenticate!, except: [:index, :show]
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_current_user, only: [:edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit]
+  before_action :set_current_user, only: [:update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -29,6 +30,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in @user
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -56,6 +58,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+    sign_out
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
@@ -66,6 +69,10 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def set_current_user
+      @user = current_user
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

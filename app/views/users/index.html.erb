@@ -1,7 +1,9 @@
-<%= link_to 'Sign In', login_path %>
-<%= link_to 'Sign Out', logout_path, method: :delete, data: {confirm: 'Are you sure?'} %>
-
-<p id="notice"><%= notice %></p>
+<% if signed_in_user? %>
+  <p>Welcome, <%= current_user.username %>!</p>
+  <%= link_to 'Sign Out', logout_path, method: :delete, data: {confirm: 'Are you sure?'} %>
+<% else %>
+  <%= link_to 'Sign In', login_path %>
+<% end %>
 
 <h1>Listing Users</h1>
 
