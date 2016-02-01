@@ -3,13 +3,15 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  USERS = {'foo' => 'bar'}
-
   private
 
-  def authenticate!
-    authenticate_or_request_with_http_digest do |username|
-      USERS[username]
-    end
+  def sign_in(user)
+    session[:user_id] = user.id
+    @current_user = user
+  end
+
+  def sign_out
+    @current_user = nil
+    session.delete(:user_id)
   end
 end
