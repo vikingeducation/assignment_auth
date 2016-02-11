@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  # before_action :require_login,   :except => [ :new, :create ]
+  # before_action :require_current_user,  :only => [ :index, :edit, :show ]
+  
+
   # before_action :authenticate
 
   # USERS = { "thomas"=>"tetris", "koz"=>"checkthisout", "foo"=>"bar" }
@@ -28,7 +32,7 @@ class UsersController < ApplicationController
   # POST /users
   # POST /users.json
   def create
-    @user = User.new(user_params)
+    @user = User.new( whitelist_params )
 
     respond_to do |format|
       if @user.save
@@ -45,7 +49,7 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      if @user.update( whitelist_params )
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
@@ -76,15 +80,23 @@ class UsersController < ApplicationController
       params.require(:user).permit(:username, :email)
     end
 
-    # def authenticate
-    #   authenticate_or_request_with_http_digest do |username|
-    #     USERS[username]
-    #   end
-
-    # end
-
     def whitelist_params
-      params.require(:user).permit(:username, :email, :password, :password_confirmation)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation, :id )
     end
+    
+    def require_login
+      unless signed_in_user?
+        flash[:error] = "Not authorized, please sign in!"
+        redirect_to login_path  #< Remember this is a custom route
+      end
+    end
+
+  def require_current_user
+    # don't forget that params is a string!!!
+    unless params[:id] == current_user.id.to_s
+      flash[:error] = "You're not authorized to view this"
+      redirect_to root_url
+    end
+  end 
 
 end
