@@ -8,7 +8,19 @@
 </head>
 <body>
 
-<%= yield %>
+  <h1>
+    <%= "Current user: #{ current_user.try(:email) }" %>
+    <% flash.each do |key, value| %>
+      <%= "#{key}: #{value}" %>
+    <% end %>
+  </h1>
+
+  <%= link_to 'Sign In', login_path %>
+  <%= link_to 'Sign Out', logout_path, method: :delete %>
+
+  <hr>
+
+  <%= yield %>
 
 </body>
 </html>
