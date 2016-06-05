@@ -1,10 +1,8 @@
 class UsersController < ApplicationController
-  http_basic_authenticate_with :name => "john",
-                               :password => "1234",
-                               except: [:index, :show]
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  skip_filter :authenticate, only: [:index, :show]
   # GET /users
   # GET /users.json
   def index
