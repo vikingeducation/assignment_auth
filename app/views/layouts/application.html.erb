@@ -8,6 +8,12 @@
 </head>
 <body>
 
+<%= render partial: "shared/navbar" %>
+
+<% flash .each do |key, value| %>
+	<%= content_tag(:div, value) %>
+<% end %>
+
 <%= yield %>
 
 </body>
