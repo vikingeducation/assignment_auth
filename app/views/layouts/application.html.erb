@@ -7,7 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
+  <% if signed_in_user? %>
+    <h1>Welcome, <%= link_to current_user.name, current_user %>
+    <h2><%= link_to "Logout", logout_path, :method => 'delete' %></h2>
+  <% else %>
+    <h1><%= link_to "Log in", login_path %></h1>
+  <% end %>
 <%= yield %>
 
 </body>
