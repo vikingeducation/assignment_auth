@@ -1,5 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_current_user, only: [:edit, :update, :destroy]
+  skip_before_action :require_login, only: [:new, :create, :index, :show]
+
 
   # GET /users
   # GET /users.json
@@ -28,6 +31,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -56,6 +60,7 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
+      sign_out
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
     end
