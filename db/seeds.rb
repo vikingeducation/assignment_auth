@@ -6,8 +6,10 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Users.destroy_all
+User.destroy_all
+
+User.create(email: "chuck@norris.com", username: "chuck", password_digest: Digest::SHA1.base64digest("chuckskick") )
 
 10.times do
-  User.create(email: Faker::Internet.email, username:Faker::Internet.user_name )
+  User.create(email: Faker::Internet.email, username:Faker::Internet.user_name, password_digest: Digest::SHA1.base64digest("password") )
 end
