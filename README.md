@@ -1,3 +1,5 @@
+a scaffold by David and Matt
+
 assignment_auth
 =====================
 
