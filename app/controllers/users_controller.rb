@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  skip_before_action :require_login, :only => [:new,:create]
+  # USERS = { "username" => "password"}
 
-  USERS = { "username" => "password"}
-
-  before_action :authenticate, only: [:create, :update]
+  # before_action :authenticate, only: [:create, :update]
 
   # GET /users
   # GET /users.json
@@ -32,9 +32,12 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in(@user)
+        flash[:success] = "Created new user!"
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        flash.now[:error] = "Failed to create user!"
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
@@ -59,6 +62,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+    sign_out
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
@@ -73,7 +77,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email, :password, :password_digest)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 
     def authenticate

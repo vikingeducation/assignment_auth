@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   helper_method :signed_in_user?
   helper_method :current_user
+  before_action :require_login
   # http_basic_authenticate_with :name => "username", 
   #                              :password => "password",
   #                              :only => [:update, :create]
@@ -24,5 +25,12 @@ class ApplicationController < ActionController::Base
 
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
+  end
+
+  def require_login
+    unless signed_in_user?
+      flash[:error] = "Not authorized, please sign in !"
+      redirect_to login_path
+    end
   end
 end
