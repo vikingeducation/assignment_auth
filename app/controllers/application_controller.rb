@@ -33,4 +33,11 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
+
+  def require_account_owner
+    unless params[:id] == current_user.id.to_s
+      flash[:error] = "You aren't authorized to perform this action."
+      redirect_to root_path
+    end
+  end
 end
