@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  skip_before_action :require_login, :only => [:new, :create]
+
   def new
   end
 
@@ -12,5 +14,11 @@ class SessionsController < ApplicationController
       flash.now[:error] = "We couldn't sign you in"
       render :new
     end
+  end
+
+  def destroy
+    sign_out
+    flash[:success] = "You've successfully signed out"
+    redirect_to users_path
   end
 end
