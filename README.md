@@ -1,4 +1,7 @@
-assignment_auth
+Authentication from the Ground Up
 =====================
 
-Who are you and why are you here?
+Contributors: [Johnny](https://github.com/jsteenb2) [Hannah](https://github.com/hannahsquier) [Mike]()
+
+##Description
+This is an exercise in creating an authetication system for a users model.  Including using basic, sessions, and cookies authentication.
