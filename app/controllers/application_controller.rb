@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   # http_basic_authenticate_with  :name => "foo",
                                 # :password => "bar",
                                 # :except => [:index, :show]
-
+  before_action :require_login
 
   private
   # Simply store our ID in the session
