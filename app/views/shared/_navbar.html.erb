@@ -1,0 +1,6 @@
+<% if signed_in_user? %>
+<h4 class="pull-right navbar">Signed in as <%= current_user.username %></h4>
+<h5 class="pull-right navbar"><%= link_to "Logout", logout_path, method: "DELETE" %></h5>
+<% else %>
+<h5 class="pull-right navbar"><%= link_to "Login", login_path %></h5>
+<% end %>
