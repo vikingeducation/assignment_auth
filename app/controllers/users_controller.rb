@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :authenticate
-  USERS = {"foo" => "bar" }
 
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
+  before_action :require_current_user, only: [:edit, :update, :destroy]
+  skip_before_action :require_login, only: [:new, :create, :index, :show]
   # GET /users
   # GET /users.json
   def index
@@ -31,6 +31,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in @user
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -44,12 +45,14 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
+      if current_user.update(user_params)
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
+        redirect_to current_user
       else
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
+        render :edit
       end
     end
   end
@@ -58,6 +61,7 @@ class UsersController < ApplicationController
   # DELETE /users/1.json
   def destroy
     @user.destroy
+    sign_out
     respond_to do |format|
       format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
       format.json { head :no_content }
@@ -72,12 +76,7 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params.require(:user).permit(:username, :email)
+      params.require(:user).permit(:username, :email, :password, :password_confirmation )
     end
 
-    def authenticate
-      authenticate_or_request_with_http_digest do |username|
-        USERS[username]
-      end
-    end
 end
