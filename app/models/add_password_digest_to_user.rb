@@ -1,0 +1,2 @@
+class AddPasswordDigestToUser < ApplicationRecord
+end
