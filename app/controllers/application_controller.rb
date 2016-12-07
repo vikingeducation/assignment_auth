@@ -20,9 +20,24 @@ class ApplicationController < ActionController::Base
   #   USERS[user]
   # end
 
+  before_action :require_login
 
 #Session Based Authentication
   private
+
+    def require_current_user
+      unless params[:id] == current_user.id.to_s
+        flash[:error] = "not authorized to view this"
+        redirect_to root_url
+      end
+    end
+
+    def require_login
+      unless signed_in_user?
+        flash[:error] = "Not authorized"
+        redirect_to login_path
+      end
+    end
 
     def sign_in(user)
       session[:user_id] = user.id
