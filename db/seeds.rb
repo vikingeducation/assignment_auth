@@ -8,8 +8,11 @@
 
 User.destroy_all
 
+User.create(username: 'me', email: 'me@me.com', password: 'password')
+
 20.times do
   name = Faker::Name.name
-  User.create(username: name, email: Faker::Internet.email(name))
+  User.create(username: name, email: Faker::Internet.email(name),
+              password: 'password')
 end
 
