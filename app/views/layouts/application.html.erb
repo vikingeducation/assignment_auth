@@ -9,6 +9,10 @@
   </head>
 
   <body>
+    <%= link_to "Log in!", login_path  %>
+    <% flash.each do |type, msg| %>
+      <p><%= msg %></p>
+    <% end %>
     <%= yield %>
   </body>
 </html>
