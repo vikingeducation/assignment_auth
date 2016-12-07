@@ -9,7 +9,12 @@
   </head>
 
   <body>
-    <%= link_to "Log in!", login_path  %>
+    <% if signed_in_user? %>
+      Current user: <%= current_user.username %> | 
+      <%= link_to "Log out", logout_path, method: :delete %>
+    <% else %>
+      <%= link_to "Log in!", login_path %>
+    <% end %>
     <% flash.each do |type, msg| %>
       <p><%= msg %></p>
     <% end %>
