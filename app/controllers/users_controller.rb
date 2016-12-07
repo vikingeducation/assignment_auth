@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_login, except: [:index, :new, :create]
+  before_action :require_current_user, only: [:edit, :update, :destroy]
 
   # GET /users
   # GET /users.json
@@ -64,6 +66,22 @@ class UsersController < ApplicationController
   end
 
   private
+    def require_current_user
+      unless current_user.id.to_s == params[:id]
+        flash[:warning] = "NOT AUTHORIZED TO DO THAT, BUB"
+        redirect_to users_path
+      end
+    end
+
+    def require_login
+      unless signed_in_user?
+        flash[:info] = "You must be signed in to access that page."
+        redirect_to login_path
+      end
+    end
+
+
+
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
