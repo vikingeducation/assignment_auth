@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
+
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :require_current_user, only: [:edit, :update, :destroy]
+
+  # before_action :require_login, :except => [:new, :create]
+  skip_before_action :require_login, :only => [:new, :create]
 
   # GET /users
   # GET /users.json
@@ -28,6 +33,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -41,12 +47,12 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
+      if current_user.update(user_params)
+        format.html { redirect_to current_user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: current_user }
       else
         format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
   end
