@@ -62,6 +62,11 @@ class UsersController < ApplicationController
   end
 
   private
+
+    def whitelisted_user_params
+      params.require(:user).permit(:username, :email, :password, :password_confirmation)
+    end
+
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
