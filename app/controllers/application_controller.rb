@@ -45,6 +45,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def require_current_user
+    unless params[:id] == current_user.id.to_s
+      flash[:error] = "Not authorized!"
+      redirect_to root_path
+    end
+  end
+
 
 
 end
