@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   #                              password: 'bar',
   #                              except: [:index, :show]
   protect_from_forgery with: :exception
+  before_action :require_login
 
   # USERS = { "foo" => 'bar' }
   # before_action :authenticate, except: [:index, :show]
@@ -36,6 +37,13 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
   helper_method :signed_in_user?
+
+  def require_login
+    unless signed_in_user?
+      flash[:error] = "Not authorized, please sign in!"
+      redirect_to login_path 
+    end
+  end
 
 
 
