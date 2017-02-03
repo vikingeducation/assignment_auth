@@ -1,4 +1,5 @@
-assignment_auth
-=====================
+# README
 
-Who are you and why are you here?
+Basic Auth Practice
+
+[Joe Bernardi]()
