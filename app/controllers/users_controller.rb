@@ -21,6 +21,9 @@ class UsersController < ApplicationController
 
 
   def edit
+
+    @user = User.find( params[:id] )
+
   end
 
 
@@ -41,6 +44,15 @@ class UsersController < ApplicationController
 
 
   def update
+byebug
+    @user = User.find( params[:id] )
+    if @user.update( whitelisted_user_params )
+      flash[:success] = "Updated user!"
+      redirect_to @user
+    else
+      flash.now[:error] = "Failed to Update User!"
+      render :new
+    end
 
   end
 
