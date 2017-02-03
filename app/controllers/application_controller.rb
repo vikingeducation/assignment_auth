@@ -12,7 +12,6 @@ class ApplicationController < ActionController::Base
 	  end
 
 	  def require_current_user
-	    # don't forget that params is a string!!!
 	    unless params[:id] == current_user.id.to_s
 	      flash[:error] = "You're not authorized to view this"
 	      redirect_to root_url_path
@@ -39,7 +38,7 @@ class ApplicationController < ActionController::Base
 	  def require_login
 	    unless signed_in_user?
 	      flash[:error] = "Not authorized, please sign in!"
-	      redirect_to login_path  #< Remember this is a custom route
+	      redirect_to login_path
 	    end
 	  end
 
