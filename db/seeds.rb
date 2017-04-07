@@ -5,3 +5,10 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+User.destroy_all
+
+5.times do |i|
+  u = User.new(username: "user#{i}", email: "user#{i}@email.com", password: "password#{i}")
+  u.save!
+end
