@@ -1,10 +1,8 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate, only: [:new, :create, :edit, :update]
 
-  http_basic_authenticate_with name: "foo",
-                               password: "foobar",
-                               only: [:create, :update]
-
+  USERS = {"foo" => "foobar"}
   # GET /users
   # GET /users.json
   def index
@@ -75,4 +73,11 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:username, :email)
     end
+
+    def authenticate
+      authenticate_or_request_with_http_digest do |username|
+        USERS[username]
+      end
+    end
+
 end
