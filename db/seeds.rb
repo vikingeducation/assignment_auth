@@ -10,4 +10,5 @@ puts "Deleting users"
 User.destroy_all
 
 puts "Creating users"
-10.times { |i| User.create(:username => "Foo#{i}", :email => "foo#{i}@onet.pl") }
+10.times { |i| User.create(:username => "Foo#{i}", :email => "foo#{i}@onet.pl", :password_digest => "lol#{i}") }
+User.all.each { |u| puts "#{u}"}
