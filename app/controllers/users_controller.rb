@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update]
+  before_action :sign_out_if_exists, only: [:destroy]
 
   # GET /users
   # GET /users.json
@@ -28,6 +29,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
+        sign_in(@user)
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
@@ -56,8 +58,13 @@ class UsersController < ApplicationController
   def destroy
     @user.destroy
     respond_to do |format|
-      format.html { redirect_to users_url, notice: 'User was successfully destroyed.' }
-      format.json { head :no_content }
+      if @user.destroy
+        format.html { redirect_to root_url, notice: 'User was successfully destroyed.' }
+        format.json { head :no_content }
+      else
+        format.html { render :index }
+        format.json { render json: @user.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -65,6 +72,16 @@ class UsersController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_user
       @user = User.find(params[:id])
+    end
+
+    def sign_out_if_exists
+      @user = User.find(params[:id])
+      if @user == current_user
+        sign_out
+        flash[:success] = "Successfully signed out and deleted account."
+      else
+        redirect_to :back, :flash => { :notice => 'Error'}
+      end
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

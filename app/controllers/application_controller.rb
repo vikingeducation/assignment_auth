@@ -22,7 +22,9 @@ class ApplicationController < ActionController::Base
 
   def sign_out
     @current_user = nil
+    puts "DBG: before - session[:user] = #{session[:user].inspect}"
     session.delete(:user_id)
+    puts "DBG: after - session[:user] = #{session[:user].inspect}"
   end
 
   def current_user
