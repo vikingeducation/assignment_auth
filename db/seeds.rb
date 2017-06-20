@@ -5,3 +5,9 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+puts "Deleting users"
+User.destroy_all
+
+puts "Creating users"
+10.times { |i| User.create(:username => "Foo#{i}", :email => "foo#{i}@onet.pl") }
