@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   #   end
   # end
 
+  before_action :require_login
+
   private
   def sign_in(user)
     session[:user_id] = user.id
@@ -34,5 +36,19 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
   helper_method :signed_in_user?
+
+  def require_login
+    unless signed_in_user?
+      flash[:error] = "Your are not authorized to do this, please sign in!"
+      redirect_to login_path
+    end
+  end
+
+  def require_current_user
+    unless params[:user] == current_user.id.to_s
+      flash[:error] = "You are not authorized to view this"
+      redirect_to root_url
+    end
+  end
 
 end

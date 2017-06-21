@@ -2,6 +2,9 @@ class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update]
   before_action :sign_out_if_exists, only: [:destroy]
 
+  before_action :require_current_user, only: [:edit, :update, :destroy]
+  skip_before_action :require_login, only: [:new, :create]
+
   # GET /users
   # GET /users.json
   def index
@@ -43,12 +46,13 @@ class UsersController < ApplicationController
   # PATCH/PUT /users/1.json
   def update
     respond_to do |format|
-      if @user.update(whitelisted_user_params)
-        format.html { redirect_to @user, notice: 'User was successfully updated.' }
-        format.json { render :show, status: :ok, location: @user }
+      if current_user.update(whitelisted_user_params)
+        # flash[:success] = "Your profile is successfully updated"
+        format.html { redirect_to current_user, notice: 'User was successfully updated.' }
+        format.json { render :show, status: :ok, location: current_user }
       else
         format.html { render :edit }
-        format.json { render json: @user.errors, status: :unprocessable_entity }
+        format.json { render json: current_user.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -56,7 +60,6 @@ class UsersController < ApplicationController
   # DELETE /users/1
   # DELETE /users/1.json
   def destroy
-    @user.destroy
     respond_to do |format|
       if @user.destroy
         format.html { redirect_to root_url, notice: 'User was successfully destroyed.' }
@@ -80,7 +83,7 @@ class UsersController < ApplicationController
         sign_out
         flash[:success] = "Successfully signed out and deleted account."
       else
-        redirect_to :back, :flash => { :notice => 'Error'}
+        redirect_to :back, :flash => { :notice => 'Your are not authorized to do this!!'}
       end
     end
 
