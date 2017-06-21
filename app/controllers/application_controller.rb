@@ -16,15 +16,13 @@ class ApplicationController < ActionController::Base
 
   private
   def sign_in(user)
-    session[:user] = user.id
+    session[:user_id] = user.id
     @current_user = user
   end
 
   def sign_out
     @current_user = nil
-    puts "DBG: before - session[:user] = #{session[:user].inspect}"
     session.delete(:user_id)
-    puts "DBG: after - session[:user] = #{session[:user].inspect}"
   end
 
   def current_user
