@@ -1,7 +1,13 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-  http_basic_authenticate_with :name =>"carl",
-                              :password => "cup",
-                              :except => [:index, :show]
+  before_action :authenticate_user
+  USERS = {"carl" => "cup"}
+
+  private
+  def authenticate_user
+    authenticate_or_request_with_http_digest do |username|
+      USERS[username]
+    end
+  end
 
 end
