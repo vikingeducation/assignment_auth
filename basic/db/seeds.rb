@@ -11,22 +11,27 @@ puts "Old records destroyed."
 
 puts "Creating 5 Penguin Users..."
 User.create(username: "CarlHagelin",
+            name: "Carl Hagelin",
             email: "carl@pens.com",
             password_digest: BCrypt::Password.create('carl62'))
 
 User.create(username: "PatricHornqvist",
+            name: "Patric Hornqvist",
             email: "horny@pens.com",
             password_digest: BCrypt::Password.create('patric72'))
 
 User.create(username: "SidneyCrosby",
             email: "sid@pens.com",
+            name: "Sidney Crosby",
             password_digest: BCrypt::Password.create('sid87'))
 
 User.create(username: "ConorSheary",
             email: "conor@pens.com",
+            name: "Conor Sheary",
             password_digest: BCrypt::Password.create('conor43'))
 
 User.create(username: "EvgeniMalkin",
             email: "geno@pens.com",
+            name: "Evgeni Malkin",
             password_digest: BCrypt::Password.create('geno81'))
 puts "5 Pens created."
