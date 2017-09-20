@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+  
+  # You can also use `skip_before_action`
+  skip_before_action :authenticate_user, :only => [:index, :show]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # GET /users
