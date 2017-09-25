@@ -9,6 +9,27 @@
   </head>
 
   <body>
+    <!-- show logged in user and provide login / logout links -->
+    <% if logged_in_user? %>
+      <div>
+        Welcome, <%= link_to current_user.username, current_user %>!
+
+        <%= link_to "Logout", logout_path, method: :delete %>
+      </div>
+    <% else %>
+      <%= link_to "Login", login_path %>
+    <% end %>
+
+
+    <!-- flash message -->
+    <% if flash.present? %>
+      <% flash.each do |type, message| %>
+        <div>
+          <%= message %>
+        </div>
+      <% end %>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
