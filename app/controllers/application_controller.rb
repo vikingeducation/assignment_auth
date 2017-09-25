@@ -3,6 +3,8 @@ class ApplicationController < ActionController::Base
 
   before_action :require_login
 
+  private
+
   def login(user)
     session[:user_id] = user.id
     @current_user = user
@@ -25,12 +27,17 @@ class ApplicationController < ActionController::Base
   end
   helper_method :logged_in_user?
 
-  private
-
   def require_login
     unless logged_in_user?
-      flash[:error] = "You do not have permission to access this page. Please log in."
+      flash[:error] = "You need to be logged in to view this page. Please log in."
       redirect_to login_path
+    end
+  end
+
+  def require_current_user
+    unless params[:id] == current_user.id.to_s
+      flash[:error] = "You're not authorized to view this page."
+      redirect_to root_url
     end
   end
 end

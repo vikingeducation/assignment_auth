@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   resources :users
 
   resource :session, only: [:new, :create, :destroy]
-  get "login", to: "session#new"
-  delete "logout", to: "session#destroy"
+  get "login", to: "sessions#new"
+  delete "logout", to: "sessions#destroy"
 
   root to: "users#index"
 
