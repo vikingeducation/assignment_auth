@@ -10,6 +10,11 @@
 
   <body>
 
+    <% flash.each do |key, value| %>
+      <div class="flash <%= key %>" id="notice"><%= value %></div>
+      <br>
+    <% end %>
+
     <% if signed_in_user? %>
       Welcome, <%= link_to current_user.name, current_user %>!
       <!-- Note ... add "method: :delete" -->

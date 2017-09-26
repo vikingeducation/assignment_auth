@@ -26,4 +26,7 @@
 
 <br>
 
-<%= link_to 'New User', new_user_path %>
+<% unless signed_in_user? %>
+  <%= link_to 'New User', new_user_path %>
+<% end %>
+

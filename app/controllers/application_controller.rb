@@ -44,7 +44,7 @@ class ApplicationController < ActionController::Base
   def require_current_user
     # don't forget params is a string
     unless params[:id] == current_user.id.to_s
-      flash[:error] = "View not authorized to you"
+      flash[:error] = "You are not authorized to do this"
       redirect_to root_path
     end
   end
