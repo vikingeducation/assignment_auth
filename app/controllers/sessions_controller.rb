@@ -1,15 +1,15 @@
 class SessionsController < ApplicationController
 
-  skip_before_action :require_login, only: [:new, :create]
+  skip_before_action :require_login, :only => [:new, :create]
 
   def create
-    @user = User.find_by_email(params;:email])
+    @user = User.find_by_email(params[:email])
     if @user && @user.authenticate(params[:password])
       sign_in(@user)
       flash[:success] = "Sign in success!"
       redirect_to root_url
     else
-      flas.now[:error] = "Sign in failure!"
+      flash.now[:error] = "Sign in failure!"
       render :new
     end
   end
@@ -17,7 +17,7 @@ class SessionsController < ApplicationController
   def destroy
     sign_out
     flash[:success] = "Sign out success!"
-    redirect_to root_url
+    redirect_to root_path
   end
 
 end
