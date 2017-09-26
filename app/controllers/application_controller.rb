@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
-
+  before_action :require_login
 
   private
 
@@ -29,12 +29,28 @@ class ApplicationController < ActionController::Base
 
   # Will turn the surrent_user into a boolean
   # e.g. 'nil' becomes false and anything else true.
-  def sign_in_user?
+  def signed_in_user?
     !!current_user
   end
   helper_method :signed_in_user?
 
+  def require_login
+    unless signed_in_user?
+      flash[:error] = = "Not authorized, please sign in!"
+      redirect_to login_path # this is custom route
+    end
+  end
+
+  def require_current_user
+    # don't forget params is a string
+    unless params[:id] == current_user.id.to_s
+      flash[:error] = "View not authorized to you"
+      redirect_to root_url
+    end
+  end
+
 end
+
 
 
 # Code from previous HTTP basic/digest exercise 
