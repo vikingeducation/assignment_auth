@@ -1,5 +1,7 @@
+
 <%= form_tag session_path do %>
 
+  <br>
   <%= label_tag do %>
     Email
     <%= text_field_tag :email %>
@@ -12,3 +14,6 @@
 
   <%= submit_tag "Log In" %>
 <% end %>  
+
+<br>
+<%= link_to 'Back', users_path %>
