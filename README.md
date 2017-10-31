@@ -14,3 +14,8 @@ Project: Basic Authorization
 
 
 [A n assignment from the Viking Code School](https://www.vikingcodeschool.com)
+
+Deocde a string with Base64
+
+Base64.encode64("Now is the time for all good coders\nto learn Ruby")
+Base64.decode64("Tm93IGlzIHRoZSB0aW1lIGZvciBhbGwgZ29vZCBjb2RlcnMKdG8gbGVhcm4g\nUnVieQ==\n")
