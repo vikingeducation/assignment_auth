@@ -7,8 +7,11 @@ class ApplicationController < ActionController::Base
   #                               :password => "bar",
   #                               :only => [:update, :create]
 
-  before_action :require_login, :except => [:new, :create, :index]
-  skip_before_action :require_login, :only => [:new, :create, :index]
+  # before_action :require_login, :except => [:new, :create, :index]
+  # skip_before_action :require_login, :only => [:new, :create, :index]
+
+  before_action :require_login
+  
   private
 
   # The HTTP Basic version

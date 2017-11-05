@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  # before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action :set_user, only: [:show, :edit, :update]
   
-  before_action :require_login, :except => [:new, :create]
+  # before_action :require_login, :except => [:new, :create]
   skip_before_action :require_login, :only => [:new, :create]
   before_action :require_current_user, :only => [:edit, :update, :destroy]
 
@@ -98,7 +98,7 @@ class UsersController < ApplicationController
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
-    def user_params
+    def whitelisted_user_params
       params.require(:user).permit(:username, :email, :password, :password_confirmation)
     end
 end

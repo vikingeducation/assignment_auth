@@ -9,7 +9,11 @@
 
 def create_users
   10.times do |i|
-    User.create(:username => "foo#{i}", :email => "foo#{i}@foo.com")
+    User.create!(
+      :username => "foo#{i}", 
+      :email => "foo#{i}@foo.com",
+      :password => "foobar#{i}",
+      :password_confirmation => "foobar#{i}")
   end
 end
 
@@ -18,4 +22,5 @@ User.destroy_all
 
 puts "creating users"
 create_users
+puts "finished creating users"
 
