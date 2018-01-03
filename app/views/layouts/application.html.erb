@@ -9,6 +9,24 @@
   </head>
 
   <body>
+    <nav>
+      <%= link_to 'Home', root_path %> |
+
+      <% if signed_in_user? %>
+        Welcome, <%= link_to current_user.username, current_user %>!
+        <%= link_to "Logout", logout_path, :method => :delete %>
+      <% else %>
+        <%= link_to "Login", login_path %>
+      <% end %>
+    </nav>
+
+    <% flash.each do |type, message| %>
+      <div class="alert alert-<%= bootstrap_flash_class(type) %> fadein">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden=true>&times;</span><span class="sr-only">Close</span></button>
+        <%= message %>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
