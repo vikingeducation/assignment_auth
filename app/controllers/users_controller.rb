@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_login, :except => [:new, :create]
-  before_action :require_current_user, :only => [:edit, :update, :destroy]
+  # before_action :require_login, :except => [:new, :create]
+  # before_action :require_current_user, :only => [:edit, :update, :destroy]
   before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   # Basic HTTP Auth
@@ -13,9 +13,9 @@ class UsersController < ApplicationController
   #                               :except => [:index, :show]
 
   # Disgest HTTP Auth
-  # USERS = {'admin' => 'admin'}
-  # before_action :authenticate,
-  #               :except => [:index, :show]
+  USERS = {'admin' => 'admin'}
+  before_action :authenticate,
+                :except => [:index, :show]
 
   # GET /users
   # GET /users.json
